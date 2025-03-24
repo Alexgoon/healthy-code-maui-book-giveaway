@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Name="page"
+    x:Class="MauiBookGiveaway.Views.MvvmPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dx="http://schemas.devexpress.com/maui"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:MauiBookGiveaway.ViewModels"
+    xmlns:models="clr-namespace:MauiBookGiveaway.Domain.Data;assembly=MauiBookGiveaway.Domain"
+    x:DataType="viewModels:MvvmViewModel"
+    BindingContext="{dx:Ioc Type={x:Type TypeName=viewModels:MvvmViewModel}}"
+    Title="Giveaway">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding InitializeCommand}" BindingContext="{Binding Path=BindingContext, Source={x:Reference page}}" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+        <dx:DXCollectionView ItemsSource="{Binding Customers}" ItemSpacing="16">
+            <dx:DXCollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Customer">
+                    <Grid ColumnDefinitions="auto,*" RowDefinitions="auto,auto" Padding="16" ColumnSpacing="16">
+                        <dx:DXBorder BackgroundColor="{dx:ThemeColor PrimaryContainer}" VerticalOptions="Center" Padding="0" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.RowSpan="2">
+                            <Label Text="A" TextColor="{dx:ThemeColor OnPrimaryContainer}" FontAttributes="Bold" MaxLines="2" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </dx:DXBorder>
+                        <Label Text="{Binding FirstName}" TextColor="{dx:ThemeColor OnSurface}" FontSize="16" Grid.Column="1" />
+                        <Label Text="{Binding LastName}" TextColor="{dx:ThemeColor OnSurfaceVariant}" MaxLines="1" FontSize="14" Grid.Column="1" Grid.Row="1" />
+                    </Grid>
+                </DataTemplate>
+            </dx:DXCollectionView.ItemTemplate>
+        </dx:DXCollectionView>
+
+        <ActivityIndicator
+            IsRunning="{Binding InitializeCommand.IsRunning}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+        <dx:DXButton Command="{Binding SelectNextWinnerCommand}" Icon="add" Content="Next Winner" ButtonType="Filled" Margin="16" IconWidth="24" IconHeight="24" CornerRadius="16" HorizontalOptions="End" VerticalOptions="End" HeightRequest="56"  Padding="16" />
+    </Grid>
+
+</ContentPage>
